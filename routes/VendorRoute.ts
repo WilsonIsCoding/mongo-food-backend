@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 router.get("/", (req: Request, res: Response) => {
-  return res.json({ message: "Hello from vandor route" });
+  return res.json({ message: "Hello from vendor route" });
 });
 
-export { router as VandorRoute };
+export { router as VendorRoute };

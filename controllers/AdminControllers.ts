@@ -1,13 +1,24 @@
 import { Request, Response } from "express";
-import { CreateVandorInput } from "../dto";
+import { CreateVendorInput } from "../dto";
+import { Vendor } from "../models";
 
-export const CreateAdmin = async (req: Request, res: Response) => {
-  const {name, ownerName, foodType, pincode, address, phone, email, password} = <CreateVandorInput>req.body;
+export const CreateVendor = async (req: Request, res: Response) => {
+  const {
+    name,
+    address,
+    pincode,
+    foodType,
+    ownerName,
+    phone,
+    email,
+    password,
+  } = <CreateVendorInput>req.body;
 
-  const createVandor = await Vandor.create({name, ownerName, foodType, pincode, address, phone, email, password});
-  
-  return res.json({name, ownerName, foodType, pincode, address, phone, email, password});
+  const createVendor = await Vendor.create({
+    name: name,
+  });
 
+  return res.json(createVendor);
 };
 
 export const GetAdmins = async (req: Request, res: Response) => {

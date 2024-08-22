@@ -1,1 +1,1 @@
-const MONGO_URI = "mongodb://localhost:27017/food-delivery";
+const MONGO_URI = "mongodb+srv://wilsoncheng0704wc:FNQLKs2J4vblgZRq@admin-food.gnwoh.mongodb.net/";
