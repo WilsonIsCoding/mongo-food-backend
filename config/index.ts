@@ -1,1 +1,1 @@
-const MONGO_URI = "mongodb+srv://wilsoncheng0704wc:FNQLKs2J4vblgZRq@admin-food.gnwoh.mongodb.net/";
+export const MONGO_URI = "mongodb+srv://wilsoncheng0704wc:Zxc900704@admin-food.gnwoh.mongodb.net/";

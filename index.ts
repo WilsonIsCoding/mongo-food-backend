@@ -12,6 +12,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/admin", AdminRoute);
 app.use("/vendor", VendorRoute);
 
+// app.use('/',(req,res)=>{
+//   return res.json({message:'Hello World'})
+// })
+
+
 mongoose
   .connect(MONGO_URI)
   .then(() => {

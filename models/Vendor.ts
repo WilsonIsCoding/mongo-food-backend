@@ -19,20 +19,28 @@ interface VendorDoc extends Document {
 const VendorSchema = new Schema(
   {
     name: { type: String, required: true },
-    // ownerName: { type: String, required: true },
-    // foodType: { type: [String], required: true },
-    // pincode: { type: String },
-    // address: { type: String, required: true },
-    // phone: { type: String, required: true },
-    // email: { type: String, required: true },
-    // password: { type: String, required: true },
-    // salt: { type: String, required: true },
-    // serviceAvailable: { type: Boolean },
-    // coverImages: { type: [String] },
-    // rating: { type: Number },
+    ownerName: { type: String, required: true },
+    foodType: { type: [String], required: true },
+    pincode: { type: String },
+    address: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    salt: { type: String, required: true },
+    serviceAvailable: { type: Boolean },
+    coverImages: { type: [String] },
+    rating: { type: Number },
     //   foods: [{ type: mongoose.Schema.Types.ObjectId, ref: "food" }],
   },
   {
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+        delete ret.salt;
+        delete ret.__v;
+        delete ret._id;
+      },
+    },
     timestamps: true,
   }
 );
