@@ -45,10 +45,18 @@ export const CreateVendor = async (req: Request, res: Response) => {
   return res.json(createVendor);
 };
 
-export const GetAdmins = async (req: Request, res: Response) => {
-  return res.json({ message: "Hello from admin route" });
+export const GetVendors = async (req: Request, res: Response) => {
+  const vendors = await Vendor.find();
+  if (vendors !== null) {
+    return res.json({ vendors });
+  }
+  return res.json({ message: "vendors data is not available" });
 };
 
-export const GetAdminByID = async (req: Request, res: Response) => {
-  return res.json({ message: req.params.id });
+export const GetVendorsByID = async (req: Request, res: Response) => {
+  const vandor = await Vendor.findById(req.params.id);
+  if (vandor) {
+    return res.json({ vandor });
+  }
+  return res.json({ message: "Vendor not found" });
 };
