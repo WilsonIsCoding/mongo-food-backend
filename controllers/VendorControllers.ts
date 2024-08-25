@@ -21,9 +21,18 @@ export const VendorLogin = async (req: Request, res: Response) => {
         foodType: existingUser.foodType,
         name: existingUser.name,
       });
-      return res.json({signature});
+      return res.json({ signature });
     }
   }
 
+  return res.json({ message: "Vendor not found" });
+};
+
+export const GetVendorProfile = async (req: Request, res: Response) => {
+  const user = req.user;
+  if (user) {
+    const existingVendor = await findVendor("", user._id);
+    return res.json({ existingVendor });
+  }
   return res.json({ message: "Vendor not found" });
 };
