@@ -1,7 +1,16 @@
 import { Request, Response } from "express";
-import { CreateVendorInput } from "../dto";
+import { CreateVendorInput, VendorLoginInput } from "../dto";
 import { Vendor } from "../models";
-import { GeneratePassword, GenerateSalt } from "../utils/PasswordUnility";
+import { GeneratePassword, GenerateSalt, ValidatePassword } from "../utils/PasswordUnility";
+
+
+export const findVendor = async (email: string | null, id: string | null) => {
+  if (email) {
+    return await Vendor.findOne({ email: email });
+  } else {
+    return await Vendor.findById(id);
+  }
+};
 
 export const CreateVendor = async (req: Request, res: Response) => {
   const {
@@ -15,7 +24,7 @@ export const CreateVendor = async (req: Request, res: Response) => {
     password,
   } = <CreateVendorInput>req.body;
 
-  const existingVendor = await Vendor.findOne({ email: email });
+  const existingVendor = await findVendor(email, null);
 
   if (existingVendor) {
     return res.json({ message: "Vendor already exists" });
@@ -54,7 +63,7 @@ export const GetVendors = async (req: Request, res: Response) => {
 };
 
 export const GetVendorsByID = async (req: Request, res: Response) => {
-  const vandor = await Vendor.findById(req.params.id);
+  const vandor = await findVendor(null, req.params.id);
   if (vandor) {
     return res.json({ vandor });
   }
