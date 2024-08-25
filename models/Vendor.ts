@@ -38,7 +38,8 @@ const VendorSchema = new Schema(
         delete ret.password;
         delete ret.salt;
         delete ret.__v;
-        delete ret._id;
+        delete ret.createdAt;
+        delete ret.updatedAt;
       },
     },
     timestamps: true,

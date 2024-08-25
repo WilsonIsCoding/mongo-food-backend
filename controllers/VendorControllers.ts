@@ -1,15 +1,12 @@
-import { findVendor } from "./AdminControllers";
 import { Request, Response } from "express";
-import { CreateVendorInput, VendorLoginInput } from "../dto";
-import { ValidatePassword } from "../utils";
+import { VendorLoginInput } from "../dto";
+import { GenerateSignature, ValidatePassword } from "../utils";
+import { findVendor } from "./AdminControllers";
 
-export const VendorLogin = async (
-  req: Request,
-  res: Response,
-) => {
+export const VendorLogin = async (req: Request, res: Response) => {
   const { email, password } = <VendorLoginInput>req.body;
 
-  const existingUser = await findVendor(email, '');
+  const existingUser = await findVendor(email, "");
 
   if (existingUser !== null) {
     const validation = await ValidatePassword(
@@ -18,7 +15,13 @@ export const VendorLogin = async (
       existingUser.salt
     );
     if (validation) {
-      return res.json({ message: validation });
+      const signature = await GenerateSignature({
+        _id: existingUser.id,
+        email: existingUser.email,
+        foodType: existingUser.foodType,
+        name: existingUser.name,
+      });
+      return res.json({signature});
     }
   }
 

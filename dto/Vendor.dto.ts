@@ -12,3 +12,9 @@ export interface VendorLoginInput {
     email: string;
     password: string;
 }
+export interface VendorPayload {
+    _id: string;
+    email: string;
+    foodType: [string];
+    name: string;
+}
