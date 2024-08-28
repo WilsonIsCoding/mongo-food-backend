@@ -30,7 +30,7 @@ const VendorSchema = new Schema(
     serviceAvailable: { type: Boolean },
     coverImages: { type: [String] },
     rating: { type: Number },
-    //   foods: [{ type: mongoose.Schema.Types.ObjectId, ref: "food" }],
+    foods: [{ type: mongoose.Schema.Types.ObjectId, ref: "food" }],
   },
   {
     toJSON: {

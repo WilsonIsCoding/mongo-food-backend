@@ -48,6 +48,7 @@ export const CreateVendor = async (req: Request, res: Response) => {
     salt: salt,
     serviceAvailable: true,
     coverImages: [],
+    foods:[],
     rating: 0,
   });
 

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { VendorLoginInput, EditVendorInputs } from "../dto";
+import { VendorLoginInput, EditVendorInputs, CreateFoodInputs } from "../dto";
 import { GenerateSignature, ValidatePassword } from "../utils";
+import { Food } from "../models";
 import { findVendor } from "./AdminControllers";
 
 export const VendorLogin = async (req: Request, res: Response) => {
@@ -54,8 +55,24 @@ export const updateVendorProfile = async (req: Request, res: Response) => {
   }
 };
 
+export const updateVendorCoverImage = async (req: Request, res: Response) => {
+  const user = req.user;
+  if (user) {
+    const existingVendor = await findVendor("", user._id);
+
+    if (existingVendor) {
+      const file = req.files as [Express.Multer.File];
+      const images = file.map((file: Express.Multer.File) => file.filename);
+
+      existingVendor.coverImages.push(...images);
+      const updatedVendor = await existingVendor.save();
+      return res.json({ updatedVendor });
+    }
+    return res.json({ message: "Something went wrong with the vendor" });
+  }
+};
+
 export const updateVendorService = async (req: Request, res: Response) => {
-  const { serviceAvailable } = req.body;
   const user = req.user;
   if (user) {
     const existingVendor = await findVendor("", user._id);
@@ -65,5 +82,50 @@ export const updateVendorService = async (req: Request, res: Response) => {
       return res.json({ updatedVendor });
     }
     return res.json({ message: "Vendor not found" });
+  }
+};
+
+export const AddFood = async (req: Request, res: Response) => {
+  const user = req.user;
+  if (user) {
+    const { name, description, category, foodType, readyTime, price } = <
+      CreateFoodInputs
+    >req.body;
+
+    const existingVendor = await findVendor("", user._id);
+
+    if (existingVendor) {
+      const file = req.files as [Express.Multer.File];
+      const images = file.map((file: Express.Multer.File) => file.filename);
+
+      const createFood = await Food.create({
+        vendorId: user._id,
+        name: name,
+        description: description,
+        category: category,
+        foodType: foodType,
+        images: images,
+        readyTime: readyTime,
+        price: price,
+        rating: 0,
+      });
+
+      existingVendor.foods.push(createFood);
+      const updatedVendor = await existingVendor.save();
+      return res.json({ updatedVendor });
+    }
+    return res.json({ message: "Something went wrong with the food" });
+  }
+};
+
+export const getFoods = async (req: Request, res: Response) => {
+  const user = req.user;
+  if (user) {
+    const existingVendor = await Food.find({ vendorId: user._id });
+
+    if (existingVendor) {
+      return res.json(existingVendor);
+    }
+    return res.json({ message: "Something went wrong with the food" });
   }
 };
